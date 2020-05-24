@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const {User} = require('./../mongoose/model/index');
 
 const verifyToken = async(req, res, next)=>{
+	console.log("Verifyingtoken");
 	const token = req.headers.token;
 	if(!token) res.end(401);
 	const decoded =  await jwt.decode(token);
@@ -11,6 +12,7 @@ const verifyToken = async(req, res, next)=>{
 			const status = await jwt.verify(token, user.secretKey);
 			if(status){
 				req.body.__user = user;
+				next();
 			}
 		}catch(e){
 			throw new Error({message : 'Unauthorized'})
@@ -18,7 +20,6 @@ const verifyToken = async(req, res, next)=>{
 	}).catch(e=>{
 		res.status(401).end();
 	})
-	next();
 }
 
 module.exports = {

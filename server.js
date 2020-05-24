@@ -33,10 +33,16 @@ app.use(async (req, res,next)=>{
 
 
 app.use('/auth', Routers.authRouter);
+app.use(verifyToken);
 
-app.use('/', verifyToken);
+app.get('/me', (req, res)=>{
+	
+})
 
-app.use('/book', Routers.bookRouter);
+app.get('/users', (req, res)=>{
+	console.log(req.body);
+})
+
 
 app.listen(3030, () => {
 	console.log("@3030");
